@@ -623,7 +623,9 @@ nav {
 }
 
 .back-button,
-.reset-button {
+.reset-button,
+.refresh-button,
+.check-button {
     padding: 14px 22px;
     border: none;
     border-radius: 16px;
@@ -641,9 +643,18 @@ nav {
     background-color: #dc2626;
 }
 
+.check-button {
+    background-color: #16a34a;
+}
+
+.refresh-button {
+    background-color: #2563eb;
+}
+
 .back-button:hover,
-.reset-button:hover {
-    opacity: 0.95;
+.reset-button:hover,
+.refresh-button:hover,
+.check-button:hover {
     transform: translateY(-1px);
 }
 
@@ -798,15 +809,15 @@ nav {
 
         <br><br>
 
-        Select your preferred market, choose your
-        available ingredients, enter your budget,
-        and discover meals that fit your needs.
+        Choose ingredients commonly found in wet markets
+        and supermarkets, enter your budget, and discover
+        meals that fit your needs.
 
     </p>
 
 
     <h2 class="market-title">
-        Choose Your Market
+        Start Shopping
     </h2>
 
 
@@ -815,18 +826,9 @@ nav {
 
         <button
             class="market-button"
-            onclick="selectMarket('DALI')">
+            onclick="selectMarket('Market')">
 
-            DALI
-
-        </button>
-
-
-        <button
-            class="market-button"
-            onclick="selectMarket('ALFAMART')">
-
-            ALFAMART
+            Shop now
 
         </button>
 
@@ -1045,32 +1047,6 @@ nav {
 
 
 
-    <!-- ACTION BUTTONS -->
-
-    <div class="action-buttons">
-
-
-        <button
-            class="back-button"
-            onclick="showHome()">
-
-            Back to Home
-
-        </button>
-
-
-        <button
-            class="reset-button"
-            onclick="resetAll()">
-
-            Reset
-
-        </button>
-
-
-    </div>
-
-
 </section>
 
 
@@ -1085,13 +1061,14 @@ nav {
    STORE DATABASE
 
    These are SAMPLE / ESTIMATED prices.
-   Real DALI and Alfamart prices vary by branch and date.
+   These items represent goods commonly found in wet markets
+   and supermarkets.
 ========================================================= */
 
 const storeData = {
 
 
-DALI: [
+Market: [
 
 
 /* RICE & GRAINS */
@@ -1505,41 +1482,11 @@ price: 40
 
 
 /* =========================================================
-   ALFAMART
-   Same product database with different sample prices
+   MARKET DATA
+   Generic wet market / supermarket products
 ========================================================= */
 
-ALFAMART: []
-
 };
-
-
-/* Copy DALI products and adjust sample prices */
-
-storeData.ALFAMART =
-
-storeData.DALI.map(
-
-function(product) {
-
-return {
-
-name:
-product.name,
-
-category:
-product.category,
-
-price:
-Math.round(
-product.price * 1.05
-)
-
-};
-
-}
-
-);
 
 
 /* =========================================================
@@ -2128,7 +2075,7 @@ function openMarket() {
     if (!currentStore) {
 
         alert(
-            "Please choose DALI or ALFAMART first."
+            "Please start shopping first."
         );
 
         return;
@@ -3416,6 +3363,10 @@ function resetAll() {
 
     renderSelected();
 
+    renderSummary();
+
+    updateStepTracker();
+
     document
         .getElementById(
             "budget-status"
@@ -3431,6 +3382,15 @@ function resetAll() {
         .display =
         "none";
 
+}
+
+function refreshApp() {
+    window.location.reload();
+}
+
+function checkRecipes() {
+    renderRecipes();
+    updateStepTracker();
 }
 
 
