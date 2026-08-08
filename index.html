@@ -1,0 +1,3238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tipid Meals</title>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #808080;
+    color: #3e2723;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   MAIN APP
+========================================================= */
+
+#app {
+    width: 95%;
+    max-width: 1200px;
+    min-height: 750px;
+    margin: 30px auto;
+    background-color: #deb887;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+nav {
+    background-color: #5d4037;
+    color: white;
+    padding: 18px 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    border: none;
+    background: transparent;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.nav-button:hover {
+    background-color: #3e2723;
+    border-radius: 6px;
+}
+
+
+/* =========================================================
+   PAGES
+========================================================= */
+
+.page {
+    display: none;
+    padding: 40px;
+}
+
+.page.active {
+    display: block;
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+#home {
+    text-align: center;
+    min-height: 650px;
+
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#home.active {
+    display: flex;
+}
+
+.home-title {
+    font-size: 60px;
+    letter-spacing: 7px;
+    margin: 0;
+}
+
+.home-subtitle {
+    font-size: 22px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.home-description {
+    max-width: 750px;
+    line-height: 1.7;
+    font-size: 17px;
+}
+
+.market-title {
+    margin-top: 35px;
+}
+
+.market-container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.market-button {
+    width: 230px;
+    padding: 25px;
+
+    background-color: #5d4037;
+    color: white;
+
+    border: none;
+    border-radius: 15px;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.market-button:hover {
+    background-color: #3e2723;
+    transform: translateY(-5px);
+}
+
+
+/* =========================================================
+   MARKET HEADER
+========================================================= */
+
+.market-header {
+    text-align: center;
+}
+
+.market-header h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.market-header p {
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-container {
+    margin: 25px 0;
+}
+
+#ingredient-search {
+    width: 100%;
+    padding: 15px;
+
+    border: 2px solid #795548;
+    border-radius: 10px;
+
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.category-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.category-button {
+    padding: 11px 17px;
+
+    border: none;
+    border-radius: 20px;
+
+    background-color: #8d6e63;
+    color: white;
+
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.category-button:hover {
+    background-color: #5d4037;
+}
+
+.category-button.active {
+    background-color: #3e2723;
+}
+
+
+/* =========================================================
+   INGREDIENTS
+========================================================= */
+
+.ingredient-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 15px;
+}
+
+.ingredient-card {
+    background-color: #f5deb3;
+    padding: 18px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.12);
+}
+
+.ingredient-card h3 {
+    margin-top: 0;
+}
+
+.ingredient-category {
+    color: #795548;
+    font-size: 13px;
+}
+
+.ingredient-price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.add-button {
+    width: 100%;
+    padding: 10px;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: #5d4037;
+    color: white;
+
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #3e2723;
+}
+
+.add-button.selected {
+    background-color: #78909c;
+}
+
+
+/* =========================================================
+   SELECTED INGREDIENTS
+========================================================= */
+
+.selected-section {
+    margin-top: 40px;
+
+    background-color: #d2a679;
+    padding: 25px;
+
+    border-radius: 15px;
+}
+
+.selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.selected-item {
+    background-color: #f5deb3;
+
+    padding: 10px 15px;
+
+    border-radius: 20px;
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.remove-small {
+    border: none;
+
+    background-color: #8d3b3b;
+
+    color: white;
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BUDGET
+========================================================= */
+
+.budget-area {
+    margin-top: 25px;
+}
+
+#budget-input {
+    padding: 13px;
+    width: 250px;
+
+    border: 2px solid #795548;
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+.budget-status {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.status-good {
+    color: green;
+}
+
+.status-bad {
+    color: #8d3b3b;
+}
+
+
+/* =========================================================
+   RECIPE SECTION
+========================================================= */
+
+.recipe-section {
+    margin-top: 45px;
+    padding-top: 30px;
+
+    border-top: 2px solid #a1887f;
+}
+
+.recipe-filter {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin: 20px 0;
+}
+
+.recipe-filter button {
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 20px;
+
+    background-color: #795548;
+    color: white;
+
+    cursor: pointer;
+}
+
+.recipe-filter button.active {
+    background-color: #3e2723;
+}
+
+.recipe-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   RECIPE CARD
+========================================================= */
+
+.recipe-card {
+    background-color: #f5deb3;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,0.15);
+}
+
+.recipe-card h3 {
+    margin-top: 0;
+}
+
+.recipe-type {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.filipino {
+    background-color: #d7ccc8;
+}
+
+.international {
+    background-color: #c5cae9;
+}
+
+.recipe-cost {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.match-good {
+    color: green;
+    font-weight: bold;
+}
+
+.match-warning {
+    color: #8d3b3b;
+    font-weight: bold;
+}
+
+.recipe-button {
+    width: 100%;
+
+    padding: 11px;
+
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: #5d4037;
+    color: white;
+
+    cursor: pointer;
+}
+
+.panlasang-button {
+    display: block;
+
+    text-align: center;
+
+    margin-top: 10px;
+
+    padding: 10px;
+
+    background-color: #795548;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 7px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   RECIPE DETAILS
+========================================================= */
+
+.recipe-details {
+    margin-top: 20px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #a1887f;
+}
+
+.recipe-details ul {
+    padding-left: 20px;
+}
+
+.have-list {
+    color: green;
+}
+
+.need-list {
+    color: #8d3b3b;
+}
+
+
+/* =========================================================
+   RESET / BACK
+========================================================= */
+
+.action-buttons {
+    margin-top: 30px;
+
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.back-button,
+.reset-button {
+
+    padding: 12px 22px;
+
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: #795548;
+}
+
+.reset-button {
+    background-color: #8d3b3b;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px) {
+
+    #app {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .page {
+        padding: 25px 18px;
+    }
+
+    .home-title {
+        font-size: 40px;
+    }
+
+    .market-button {
+        width: 100%;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div id="app">
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+    <div class="logo">
+        TIPID MEALS
+    </div>
+
+    <div class="nav-links">
+
+        <button
+            class="nav-button"
+            onclick="showHome()">
+
+            Home
+
+        </button>
+
+        <button
+            class="nav-button"
+            onclick="openMarket()">
+
+            Start Meal
+
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HOME PAGE
+===================================================== -->
+
+<section
+    id="home"
+    class="page active">
+
+
+    <h1 class="home-title">
+        TIPID MEALS
+    </h1>
+
+
+    <p class="home-subtitle">
+        Eat Well. Spend Less. Enjoy More.
+    </p>
+
+
+    <p class="home-description">
+
+        Tipid Meals is a budget-friendly meal
+        planning system that helps users create
+        delicious dishes using affordable ingredients.
+
+        <br><br>
+
+        Select your preferred market, choose your
+        available ingredients, enter your budget,
+        and discover meals that fit your needs.
+
+    </p>
+
+
+    <h2 class="market-title">
+        Choose Your Market
+    </h2>
+
+
+    <div class="market-container">
+
+
+        <button
+            class="market-button"
+            onclick="selectMarket('DALI')">
+
+            DALI
+
+        </button>
+
+
+        <button
+            class="market-button"
+            onclick="selectMarket('ALFAMART')">
+
+            ALFAMART
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     MARKET PAGE
+===================================================== -->
+
+<section
+    id="market-page"
+    class="page">
+
+
+    <div class="market-header">
+
+        <h1 id="market-title">
+            MARKET
+        </h1>
+
+        <p>
+
+            Select ingredients that you already
+            have or plan to buy.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- SEARCH -->
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="ingredient-search"
+            placeholder="Search ingredients...">
+
+    </div>
+
+
+
+    <!-- CATEGORIES -->
+
+    <div
+        id="category-container"
+        class="category-container">
+
+    </div>
+
+
+
+    <!-- INGREDIENTS -->
+
+    <div
+        id="ingredient-container"
+        class="ingredient-container">
+
+    </div>
+
+
+
+    <!-- =================================================
+         SELECTED INGREDIENTS
+    ================================================== -->
+
+    <div class="selected-section">
+
+        <h2>
+            Selected Ingredients
+        </h2>
+
+
+        <div
+            id="selected-list"
+            class="selected-list">
+
+            <p>
+                No ingredients selected.
+            </p>
+
+        </div>
+
+
+
+        <!-- BUDGET -->
+
+        <div class="budget-area">
+
+            <h2>
+                Your Budget
+            </h2>
+
+
+            <input
+
+                type="number"
+
+                id="budget-input"
+
+                placeholder="Enter budget"
+
+                min="1"
+
+            >
+
+
+            <p
+                id="budget-status"
+                class="budget-status">
+
+                Enter your budget.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         RECIPES
+    ================================================== -->
+
+    <div
+        id="recipe-section"
+        class="recipe-section"
+        style="display:none;">
+
+
+        <h2>
+            Recommended Meals
+        </h2>
+
+
+        <p>
+
+            Filipino dishes are prioritized.
+            International dishes are optional.
+
+        </p>
+
+
+
+        <div class="recipe-filter">
+
+
+            <button
+                id="filipino-filter"
+                class="active"
+                onclick="showRecipes('filipino')">
+
+                Filipino Dishes
+
+            </button>
+
+
+            <button
+                id="international-filter"
+                onclick="showRecipes('international')">
+
+                International Dishes
+
+            </button>
+
+
+        </div>
+
+
+
+        <div
+            id="recipe-container"
+            class="recipe-container">
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="action-buttons">
+
+
+        <button
+            class="back-button"
+            onclick="showHome()">
+
+            Back to Home
+
+        </button>
+
+
+        <button
+            class="reset-button"
+            onclick="resetAll()">
+
+            Reset
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================================
+   STORE DATABASE
+
+   These are SAMPLE / ESTIMATED prices.
+   Real DALI and Alfamart prices vary by branch and date.
+========================================================= */
+
+const storeData = {
+
+
+DALI: [
+
+
+/* RICE & GRAINS */
+
+{
+name: "Rice",
+category: "Rice & Grains",
+price: 55
+},
+
+{
+name: "Brown Rice",
+category: "Rice & Grains",
+price: 80
+},
+
+{
+name: "Corn",
+category: "Rice & Grains",
+price: 40
+},
+
+
+/* MEAT */
+
+{
+name: "Chicken",
+category: "Meat",
+price: 130
+},
+
+{
+name: "Chicken Breast",
+category: "Meat",
+price: 160
+},
+
+{
+name: "Chicken Thigh",
+category: "Meat",
+price: 150
+},
+
+{
+name: "Pork",
+category: "Meat",
+price: 160
+},
+
+{
+name: "Pork Belly",
+category: "Meat",
+price: 180
+},
+
+{
+name: "Ground Pork",
+category: "Meat",
+price: 150
+},
+
+{
+name: "Beef",
+category: "Meat",
+price: 220
+},
+
+{
+name: "Ground Beef",
+category: "Meat",
+price: 200
+},
+
+
+/* FISH */
+
+{
+name: "Bangus",
+category: "Fish & Seafood",
+price: 150
+},
+
+{
+name: "Tilapia",
+category: "Fish & Seafood",
+price: 120
+},
+
+{
+name: "Galunggong",
+category: "Fish & Seafood",
+price: 120
+},
+
+{
+name: "Tuna",
+category: "Fish & Seafood",
+price: 100
+},
+
+
+/* VEGETABLES */
+
+{
+name: "Garlic",
+category: "Vegetables",
+price: 20
+},
+
+{
+name: "Onion",
+category: "Vegetables",
+price: 20
+},
+
+{
+name: "Tomato",
+category: "Vegetables",
+price: 20
+},
+
+{
+name: "Potato",
+category: "Vegetables",
+price: 35
+},
+
+{
+name: "Carrot",
+category: "Vegetables",
+price: 30
+},
+
+{
+name: "Cabbage",
+category: "Vegetables",
+price: 50
+},
+
+{
+name: "Pechay",
+category: "Vegetables",
+price: 30
+},
+
+{
+name: "Kangkong",
+category: "Vegetables",
+price: 30
+},
+
+{
+name: "Eggplant",
+category: "Vegetables",
+price: 35
+},
+
+{
+name: "Sitaw",
+category: "Vegetables",
+price: 35
+},
+
+{
+name: "Ampalaya",
+category: "Vegetables",
+price: 45
+},
+
+{
+name: "Bell Pepper",
+category: "Vegetables",
+price: 50
+},
+
+{
+name: "Ginger",
+category: "Vegetables",
+price: 25
+},
+
+
+/* EGGS & DAIRY */
+
+{
+name: "Egg",
+category: "Eggs & Dairy",
+price: 12
+},
+
+{
+name: "Milk",
+category: "Eggs & Dairy",
+price: 70
+},
+
+{
+name: "Cheese",
+category: "Eggs & Dairy",
+price: 80
+},
+
+{
+name: "Butter",
+category: "Eggs & Dairy",
+price: 90
+},
+
+
+/* FROZEN */
+
+{
+name: "Frozen Hotdog",
+category: "Frozen Goods",
+price: 70
+},
+
+{
+name: "Frozen Nuggets",
+category: "Frozen Goods",
+price: 100
+},
+
+{
+name: "Frozen Fries",
+category: "Frozen Goods",
+price: 110
+},
+
+{
+name: "Frozen Siomai",
+category: "Frozen Goods",
+price: 100
+},
+
+
+/* CANNED */
+
+{
+name: "Sardines",
+category: "Canned Goods",
+price: 25
+},
+
+{
+name: "Corned Beef",
+category: "Canned Goods",
+price: 45
+},
+
+{
+name: "Tuna Can",
+category: "Canned Goods",
+price: 45
+},
+
+{
+name: "Liver Spread",
+category: "Canned Goods",
+price: 35
+},
+
+
+/* CONDIMENTS */
+
+{
+name: "Soy Sauce",
+category: "Condiments & Sauces",
+price: 20
+},
+
+{
+name: "Vinegar",
+category: "Condiments & Sauces",
+price: 20
+},
+
+{
+name: "Fish Sauce",
+category: "Condiments & Sauces",
+price: 25
+},
+
+{
+name: "Oyster Sauce",
+category: "Condiments & Sauces",
+price: 45
+},
+
+{
+name: "Tomato Sauce",
+category: "Condiments & Sauces",
+price: 35
+},
+
+{
+name: "Banana Ketchup",
+category: "Condiments & Sauces",
+price: 35
+},
+
+{
+name: "Mayonnaise",
+category: "Condiments & Sauces",
+price: 60
+},
+
+
+/* SPICES */
+
+{
+name: "Black Pepper",
+category: "Herbs & Spices",
+price: 20
+},
+
+{
+name: "Salt",
+category: "Herbs & Spices",
+price: 15
+},
+
+{
+name: "Chili",
+category: "Herbs & Spices",
+price: 20
+},
+
+{
+name: "Bay Leaf",
+category: "Herbs & Spices",
+price: 15
+},
+
+
+/* NOODLES */
+
+{
+name: "Pancit Canton",
+category: "Noodles & Pasta",
+price: 15
+},
+
+{
+name: "Spaghetti",
+category: "Noodles & Pasta",
+price: 60
+},
+
+{
+name: "Macaroni",
+category: "Noodles & Pasta",
+price: 60
+},
+
+{
+name: "Sotanghon",
+category: "Noodles & Pasta",
+price: 50
+},
+
+
+/* COOKING */
+
+{
+name: "Cooking Oil",
+category: "Cooking & Baking",
+price: 35
+},
+
+{
+name: "Flour",
+category: "Cooking & Baking",
+price: 50
+},
+
+{
+name: "Sugar",
+category: "Cooking & Baking",
+price: 40
+},
+
+{
+name: "Cornstarch",
+category: "Cooking & Baking",
+price: 30
+},
+
+
+/* BREAD */
+
+{
+name: "Loaf Bread",
+category: "Bread & Bakery",
+price: 70
+},
+
+{
+name: "Burger Buns",
+category: "Bread & Bakery",
+price: 70
+},
+
+{
+name: "Pandesal",
+category: "Bread & Bakery",
+price: 40
+}
+
+],
+
+
+/* =========================================================
+   ALFAMART
+   Same product database with different sample prices
+========================================================= */
+
+ALFAMART: []
+
+};
+
+
+/* Copy DALI products and adjust sample prices */
+
+storeData.ALFAMART =
+
+storeData.DALI.map(
+
+function(product) {
+
+return {
+
+name:
+product.name,
+
+category:
+product.category,
+
+price:
+Math.round(
+product.price * 1.05
+)
+
+};
+
+}
+
+);
+
+
+/* =========================================================
+   RECIPE DATABASE
+========================================================= */
+
+const recipes = [
+
+
+/* =========================================================
+   FILIPINO
+========================================================= */
+
+{
+
+name: "Chicken Adobo",
+
+type: "filipino",
+
+ingredients: [
+
+"Chicken",
+
+"Soy Sauce",
+
+"Vinegar",
+
+"Garlic",
+
+"Bay Leaf",
+
+"Black Pepper"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/filipino-chicken-adobo-recipe/"
+
+},
+
+
+{
+
+name: "Adobong Baboy",
+
+type: "filipino",
+
+ingredients: [
+
+"Pork",
+
+"Soy Sauce",
+
+"Vinegar",
+
+"Garlic",
+
+"Bay Leaf",
+
+"Black Pepper"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/filipino-pork-adobo-recipe/"
+
+},
+
+
+{
+
+name: "Tortang Talong",
+
+type: "filipino",
+
+ingredients: [
+
+"Eggplant",
+
+"Egg",
+
+"Cooking Oil",
+
+"Salt",
+
+"Black Pepper"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/tortang-talong-recipe/"
+
+},
+
+
+{
+
+name: "Ginisang Monggo",
+
+type: "filipino",
+
+ingredients: [
+
+"Monggo",
+
+"Garlic",
+
+"Onion",
+
+"Tomato",
+
+"Cooking Oil"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/ginisang-munggo-recipe/"
+
+},
+
+
+{
+
+name: "Ginisang Sardinas",
+
+type: "filipino",
+
+ingredients: [
+
+"Sardines",
+
+"Garlic",
+
+"Onion",
+
+"Tomato",
+
+"Cooking Oil"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/"
+
+},
+
+
+{
+
+name: "Tuna Omelette",
+
+type: "filipino",
+
+ingredients: [
+
+"Tuna Can",
+
+"Egg",
+
+"Onion",
+
+"Cooking Oil"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/"
+
+},
+
+
+{
+
+name: "Corned Beef with Egg",
+
+type: "filipino",
+
+ingredients: [
+
+"Corned Beef",
+
+"Egg",
+
+"Onion",
+
+"Cooking Oil"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/"
+
+},
+
+
+{
+
+name: "Pancit Canton",
+
+type: "filipino",
+
+ingredients: [
+
+"Pancit Canton",
+
+"Garlic",
+
+"Onion",
+
+"Soy Sauce",
+
+"Carrot",
+
+"Cabbage"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/"
+
+},
+
+
+{
+
+name: "Chicken Afritada",
+
+type: "filipino",
+
+ingredients: [
+
+"Chicken",
+
+"Tomato Sauce",
+
+"Potato",
+
+"Carrot",
+
+"Bell Pepper",
+
+"Garlic",
+
+"Onion"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/chicken-afritada-recipe/"
+
+},
+
+
+{
+
+name: "Pork Giniling",
+
+type: "filipino",
+
+ingredients: [
+
+"Ground Pork",
+
+"Potato",
+
+"Carrot",
+
+"Tomato Sauce",
+
+"Garlic",
+
+"Onion"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/pork-giniling-recipe/"
+
+},
+
+
+{
+
+name: "Ginisang Ampalaya with Egg",
+
+type: "filipino",
+
+ingredients: [
+
+"Ampalaya",
+
+"Egg",
+
+"Garlic",
+
+"Onion",
+
+"Tomato",
+
+"Cooking Oil"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/"
+
+},
+
+
+{
+
+name: "Ginisang Pechay",
+
+type: "filipino",
+
+ingredients: [
+
+"Pechay",
+
+"Garlic",
+
+"Onion",
+
+"Oyster Sauce",
+
+"Cooking Oil"
+
+],
+
+panlasangPinoy:
+
+"https://panlasangpinoy.com/"
+
+},
+
+
+/* =========================================================
+   INTERNATIONAL
+========================================================= */
+
+{
+
+name: "Garlic Butter Chicken",
+
+type: "international",
+
+ingredients: [
+
+"Chicken",
+
+"Garlic",
+
+"Butter",
+
+"Black Pepper",
+
+"Salt"
+
+]
+
+},
+
+
+{
+
+name: "Chicken Stir Fry",
+
+type: "international",
+
+ingredients: [
+
+"Chicken",
+
+"Carrot",
+
+"Cabbage",
+
+"Bell Pepper",
+
+"Soy Sauce",
+
+"Cooking Oil"
+
+]
+
+},
+
+
+{
+
+name: "Beef Teriyaki",
+
+type: "international",
+
+ingredients: [
+
+"Beef",
+
+"Soy Sauce",
+
+"Garlic",
+
+"Onion",
+
+"Sugar"
+
+]
+
+},
+
+
+{
+
+name: "Tuna Pasta",
+
+type: "international",
+
+ingredients: [
+
+"Tuna Can",
+
+"Spaghetti",
+
+"Garlic",
+
+"Onion",
+
+"Cooking Oil"
+
+]
+
+},
+
+
+{
+
+name: "Egg Fried Rice",
+
+type: "international",
+
+ingredients: [
+
+"Rice",
+
+"Egg",
+
+"Garlic",
+
+"Soy Sauce",
+
+"Cooking Oil"
+
+]
+
+},
+
+
+{
+
+name: "Chicken Pasta",
+
+type: "international",
+
+ingredients: [
+
+"Chicken",
+
+"Spaghetti",
+
+"Tomato Sauce",
+
+"Garlic",
+
+"Onion"
+
+]
+
+},
+
+
+{
+
+name: "French Fries with Hotdog",
+
+type: "international",
+
+ingredients: [
+
+"Frozen Fries",
+
+"Frozen Hotdog"
+
+]
+
+}
+
+];
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let currentStore = "";
+
+let currentCategory = "All";
+
+let selectedIngredients = [];
+
+let currentRecipeType = "filipino";
+
+
+/* =========================================================
+   SELECT STORE
+========================================================= */
+
+function selectMarket(store) {
+
+    currentStore = store;
+
+    document
+        .getElementById("home")
+        .classList
+        .remove("active");
+
+    document
+        .getElementById("market-page")
+        .classList
+        .add("active");
+
+    document
+        .getElementById("market-title")
+        .innerText =
+        store + " INGREDIENTS";
+
+    currentCategory = "All";
+
+    selectedIngredients = [];
+
+    document
+        .getElementById("ingredient-search")
+        .value = "";
+
+    renderCategories();
+
+    renderIngredients();
+
+    renderSelected();
+
+    document
+        .getElementById("recipe-section")
+        .style
+        .display = "none";
+
+}
+
+
+/* =========================================================
+   OPEN MARKET
+========================================================= */
+
+function openMarket() {
+
+    if (!currentStore) {
+
+        alert(
+            "Please choose DALI or ALFAMART first."
+        );
+
+        return;
+
+    }
+
+    document
+        .getElementById("home")
+        .classList
+        .remove("active");
+
+    document
+        .getElementById("market-page")
+        .classList
+        .add("active");
+
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+function renderCategories() {
+
+    const container =
+        document
+        .getElementById(
+            "category-container"
+        );
+
+    const categories = [
+
+        "All",
+
+        "Rice & Grains",
+
+        "Meat",
+
+        "Fish & Seafood",
+
+        "Vegetables",
+
+        "Fruits",
+
+        "Eggs & Dairy",
+
+        "Frozen Goods",
+
+        "Canned Goods",
+
+        "Condiments & Sauces",
+
+        "Herbs & Spices",
+
+        "Noodles & Pasta",
+
+        "Bread & Bakery",
+
+        "Cooking & Baking"
+
+    ];
+
+    container.innerHTML = "";
+
+    categories.forEach(
+
+        function(category) {
+
+            const button =
+                document
+                .createElement("button");
+
+            button
+                .className =
+                "category-button";
+
+            if (
+                category ===
+                currentCategory
+            ) {
+
+                button
+                    .classList
+                    .add("active");
+
+            }
+
+            button.innerText =
+                category;
+
+            button.onclick =
+                function() {
+
+                    currentCategory =
+                        category;
+
+                    renderCategories();
+
+                    renderIngredients();
+
+                };
+
+            container
+                .appendChild(button);
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   INGREDIENTS
+========================================================= */
+
+function renderIngredients() {
+
+    const container =
+        document
+        .getElementById(
+            "ingredient-container"
+        );
+
+    const search =
+        document
+        .getElementById(
+            "ingredient-search"
+        )
+        .value
+        .toLowerCase();
+
+    let data =
+        storeData[
+            currentStore
+        ];
+
+    if (
+        currentCategory !==
+        "All"
+    ) {
+
+        data =
+            data.filter(
+
+                function(item) {
+
+                    return (
+
+                        item.category ===
+                        currentCategory
+
+                    );
+
+                }
+
+            );
+
+    }
+
+    if (search) {
+
+        data =
+            data.filter(
+
+                function(item) {
+
+                    return (
+
+                        item.name
+                            .toLowerCase()
+                            .includes(search)
+
+                    );
+
+                }
+
+            );
+
+    }
+
+    container.innerHTML = "";
+
+    if (
+        data.length ===
+        0
+    ) {
+
+        container.innerHTML =
+
+            "<p>No ingredients found.</p>";
+
+        return;
+
+    }
+
+    data.forEach(
+
+        function(item) {
+
+            const selected =
+                selectedIngredients
+                .some(
+
+                    function(selectedItem) {
+
+                        return (
+
+                            selectedItem.name ===
+                            item.name
+
+                        );
+
+                    }
+
+                );
+
+            const card =
+                document
+                .createElement("div");
+
+            card
+                .className =
+                "ingredient-card";
+
+            card.innerHTML = `
+
+                <h3>
+                    ${item.name}
+                </h3>
+
+                <p class="ingredient-category">
+                    ${item.category}
+                </p>
+
+                <p class="ingredient-price">
+                    Estimated: $${item.price.toFixed(2)}
+                </p>
+
+                <button
+                    class="add-button
+                    ${selected ? "selected" : ""}"
+                    onclick="
+                        toggleIngredient(
+                            '${item.name}'
+                        )
+                    "
+                >
+
+                    ${
+                        selected
+                        ? "Selected"
+                        : "Add Ingredient"
+                    }
+
+                </button>
+
+            `;
+
+            container
+                .appendChild(card);
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+    .getElementById(
+        "ingredient-search"
+    )
+    .addEventListener(
+
+        "input",
+
+        function() {
+
+            renderIngredients();
+
+        }
+
+    );
+
+
+/* =========================================================
+   TOGGLE INGREDIENT
+========================================================= */
+
+function toggleIngredient(name) {
+
+    const exists =
+        selectedIngredients
+        .some(
+
+            function(item) {
+
+                return (
+                    item.name ===
+                    name
+                );
+
+            }
+
+        );
+
+    if (exists) {
+
+        selectedIngredients =
+
+            selectedIngredients.filter(
+
+                function(item) {
+
+                    return (
+                        item.name !==
+                        name
+                    );
+
+                }
+
+            );
+
+    }
+
+    else {
+
+        const product =
+            storeData[
+                currentStore
+            ].find(
+
+                function(item) {
+
+                    return (
+                        item.name ===
+                        name
+                    );
+
+                }
+
+            );
+
+        selectedIngredients
+            .push(product);
+
+    }
+
+    renderIngredients();
+
+    renderSelected();
+
+    updateBudget();
+
+}
+
+
+/* =========================================================
+   SELECTED INGREDIENTS
+========================================================= */
+
+function renderSelected() {
+
+    const container =
+        document
+        .getElementById(
+            "selected-list"
+        );
+
+    container.innerHTML = "";
+
+    if (
+        selectedIngredients.length ===
+        0
+    ) {
+
+        container.innerHTML =
+
+            "<p>No ingredients selected.</p>";
+
+        return;
+
+    }
+
+    selectedIngredients.forEach(
+
+        function(item) {
+
+            const div =
+                document
+                .createElement("div");
+
+            div
+                .className =
+                "selected-item";
+
+            div.innerHTML = `
+
+                ${item.name}
+
+                <button
+                    class="remove-small"
+                    onclick="
+                        toggleIngredient(
+                            '${item.name}'
+                        )
+                    "
+                >
+
+                    ×
+
+                </button>
+
+            `;
+
+            container
+                .appendChild(div);
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   BUDGET
+========================================================= */
+
+document
+    .getElementById(
+        "budget-input"
+    )
+    .addEventListener(
+
+        "input",
+
+        function() {
+
+            updateBudget();
+
+            renderRecipes();
+
+        }
+
+    );
+
+
+function getSelectedTotal() {
+
+    return selectedIngredients
+        .reduce(
+
+            function(total, item) {
+
+                return (
+                    total +
+                    item.price
+                );
+
+            },
+
+            0
+
+        );
+
+}
+
+
+function updateBudget() {
+
+    const budget =
+        Number(
+
+            document
+            .getElementById(
+                "budget-input"
+            )
+            .value
+
+        );
+
+    const status =
+        document
+        .getElementById(
+            "budget-status"
+        );
+
+    const total =
+        getSelectedTotal();
+
+    if (!budget) {
+
+        status.innerText =
+            "Enter your budget.";
+
+        status
+            .className =
+            "budget-status";
+
+        return;
+
+    }
+
+    if (
+        total <=
+        budget
+    ) {
+
+        status.innerText =
+
+            "Within budget. Remaining: $" +
+
+            (
+                budget -
+                total
+            ).toFixed(2);
+
+        status
+            .className =
+
+            "budget-status status-good";
+
+    }
+
+    else {
+
+        status.innerText =
+
+            "Over budget by $" +
+
+            (
+                total -
+                budget
+            ).toFixed(2);
+
+        status
+            .className =
+
+            "budget-status status-bad";
+
+    }
+
+}
+
+
+/* =========================================================
+   RECIPE MATCHING
+========================================================= */
+
+function calculateMatch(recipe) {
+
+    let matched = 0;
+
+    recipe.ingredients
+        .forEach(
+
+            function(ingredient) {
+
+                const found =
+
+                    selectedIngredients
+                    .some(
+
+                        function(selected) {
+
+                            return (
+
+                                selected.name
+                                .toLowerCase() ===
+
+                                ingredient
+                                .toLowerCase()
+
+                            );
+
+                        }
+
+                    );
+
+                if (found) {
+
+                    matched++;
+
+                }
+
+            }
+
+        );
+
+    return {
+
+        matched:
+            matched,
+
+        total:
+            recipe.ingredients.length
+
+    };
+
+}
+
+
+/* =========================================================
+   RECIPE COST
+========================================================= */
+
+function calculateRecipeCost(recipe) {
+
+    let cost = 0;
+
+    recipe.ingredients
+        .forEach(
+
+            function(ingredient) {
+
+                const item =
+
+                    storeData[
+                        currentStore
+                    ].find(
+
+                        function(product) {
+
+                            return (
+
+                                product.name
+                                .toLowerCase() ===
+
+                                ingredient
+                                .toLowerCase()
+
+                            );
+
+                        }
+
+                    );
+
+                if (item) {
+
+                    cost +=
+                        item.price;
+
+                }
+
+            }
+
+        );
+
+    return cost;
+
+}
+
+
+/* =========================================================
+   SHOW RECIPES
+========================================================= */
+
+function showRecipes(type) {
+
+    currentRecipeType =
+        type;
+
+    document
+        .getElementById(
+            "filipino-filter"
+        )
+        .classList
+        .remove("active");
+
+    document
+        .getElementById(
+            "international-filter"
+        )
+        .classList
+        .remove("active");
+
+    if (
+        type ===
+        "filipino"
+    ) {
+
+        document
+            .getElementById(
+                "filipino-filter"
+            )
+            .classList
+            .add("active");
+
+    }
+
+    else {
+
+        document
+            .getElementById(
+                "international-filter"
+            )
+            .classList
+            .add("active");
+
+    }
+
+    renderRecipes();
+
+}
+
+
+/* =========================================================
+   RENDER RECIPES
+========================================================= */
+
+function renderRecipes() {
+
+    if (
+        selectedIngredients.length ===
+        0
+    ) {
+
+        document
+            .getElementById(
+                "recipe-section"
+            )
+            .style
+            .display =
+            "none";
+
+        return;
+
+    }
+
+    document
+        .getElementById(
+            "recipe-section"
+        )
+        .style
+        .display =
+        "block";
+
+
+    const container =
+        document
+        .getElementById(
+            "recipe-container"
+        );
+
+    const budget =
+        Number(
+
+            document
+            .getElementById(
+                "budget-input"
+            )
+            .value
+
+        );
+
+
+    let filtered =
+
+        recipes.filter(
+
+            function(recipe) {
+
+                return (
+
+                    recipe.type ===
+                    currentRecipeType
+
+                );
+
+            }
+
+        );
+
+
+    let results =
+
+        filtered.map(
+
+            function(recipe) {
+
+                const match =
+                    calculateMatch(
+                        recipe
+                    );
+
+                const cost =
+                    calculateRecipeCost(
+                        recipe
+                    );
+
+                const missing =
+
+                    recipe.ingredients
+                    .filter(
+
+                        function(ingredient) {
+
+                            return !(
+
+                                selectedIngredients
+                                .some(
+
+                                    function(selected) {
+
+                                        return (
+
+                                            selected.name
+                                            .toLowerCase() ===
+
+                                            ingredient
+                                            .toLowerCase()
+
+                                        );
+
+                                    }
+
+                                )
+
+                            );
+
+                        }
+
+                    );
+
+
+                return {
+
+                    recipe:
+                        recipe,
+
+                    match:
+                        match,
+
+                    cost:
+                        cost,
+
+                    missing:
+                        missing
+
+                };
+
+            }
+
+        );
+
+
+    /* Sort by highest ingredient match */
+
+    results.sort(
+
+        function(a,b) {
+
+            const matchA =
+
+                a.match.matched /
+                a.match.total;
+
+            const matchB =
+
+                b.match.matched /
+                b.match.total;
+
+            return (
+                matchB -
+                matchA
+            );
+
+        }
+
+    );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        results.length ===
+        0
+    ) {
+
+        container.innerHTML =
+
+            "<p>No matching recipes.</p>";
+
+        return;
+
+    }
+
+
+    results.forEach(
+
+        function(result) {
+
+            const recipe =
+                result.recipe;
+
+            const percentage =
+
+                Math.round(
+
+                    (
+                        result.match.matched /
+                        result.match.total
+                    ) * 100
+
+                );
+
+
+            const withinBudget =
+
+                !budget ||
+                result.cost <=
+                budget;
+
+
+            const card =
+                document
+                .createElement("div");
+
+            card
+                .className =
+                "recipe-card";
+
+
+            let missingHTML = "";
+
+            if (
+                result.missing.length >
+                0
+            ) {
+
+                missingHTML = `
+
+                    <div class="recipe-details">
+
+                        <h4>
+                            Ingredients You Still Need
+                        </h4>
+
+                        <ul class="need-list">
+
+                            ${
+                                result.missing
+                                .map(
+
+                                    function(item) {
+
+                                        return `
+                                            <li>
+                                                ${item}
+                                            </li>
+                                        `;
+
+                                    }
+
+                                )
+                                .join("")
+                            }
+
+                        </ul>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            card.innerHTML = `
+
+                <span
+                    class="
+                        recipe-type
+                        ${
+                            recipe.type ===
+                            "filipino"
+
+                            ? "filipino"
+
+                            : "international"
+                        }
+                    "
+                >
+
+                    ${
+                        recipe.type ===
+                        "filipino"
+
+                        ? "🇵🇭 Filipino Dish"
+
+                        : "🌎 International Dish"
+                    }
+
+                </span>
+
+
+                <h3>
+
+                    ${recipe.name}
+
+                </h3>
+
+
+                <p>
+
+                    Ingredient Match:
+
+                    <strong>
+
+                        ${
+                            result.match.matched
+                        }
+
+                        /
+
+                        ${
+                            result.match.total
+                        }
+
+                    </strong>
+
+                    (${percentage}%)
+
+                </p>
+
+
+                <p class="recipe-cost">
+
+                    Estimated Full Ingredient Cost:
+
+                    $${result.cost.toFixed(2)}
+
+                </p>
+
+
+                <p
+                    class="
+                        ${
+                            withinBudget
+                            ? "match-good"
+                            : "match-warning"
+                        }
+                    "
+                >
+
+                    ${
+                        withinBudget
+                        ? "✓ Within your budget"
+                        : "⚠ May exceed your budget"
+                    }
+
+                </p>
+
+
+                ${
+                    selectedIngredients.length >
+                    0
+
+                    ? `
+
+                        <div class="recipe-details">
+
+                            <h4>
+                                Ingredients You Have
+                            </h4>
+
+                            <ul class="have-list">
+
+                                ${
+                                    recipe.ingredients
+                                    .filter(
+
+                                        function(ingredient) {
+
+                                            return (
+
+                                                selectedIngredients
+                                                .some(
+
+                                                    function(selected) {
+
+                                                        return (
+
+                                                            selected.name
+                                                            .toLowerCase() ===
+
+                                                            ingredient
+                                                            .toLowerCase()
+
+                                                        );
+
+                                                    }
+
+                                                )
+
+                                            );
+
+                                        }
+
+                                    )
+                                    .map(
+
+                                        function(item) {
+
+                                            return `
+                                                <li>
+                                                    ${item}
+                                                </li>
+                                            `;
+
+                                        }
+
+                                    )
+                                    .join("")
+
+                                }
+
+                            </ul>
+
+                        </div>
+
+                    `
+
+                    : ""
+
+                }
+
+
+                ${missingHTML}
+
+
+                ${
+                    recipe.type ===
+                    "filipino"
+
+                    ?
+
+                    `
+
+                        <a
+
+                            class="
+                                panlasang-button
+                            "
+
+                            href="
+                                ${recipe.panlasangPinoy}
+                            "
+
+                            target="_blank"
+
+                            rel="
+                                noopener noreferrer
+                            "
+
+                        >
+
+                            View on Panlasang Pinoy
+
+                        </a>
+
+                    `
+
+                    :
+
+                    ""
+
+                }
+
+            `;
+
+
+            container
+                .appendChild(card);
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetAll() {
+
+    selectedIngredients = [];
+
+    currentCategory =
+        "All";
+
+    document
+        .getElementById(
+            "budget-input"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "ingredient-search"
+        )
+        .value = "";
+
+    renderCategories();
+
+    renderIngredients();
+
+    renderSelected();
+
+    document
+        .getElementById(
+            "budget-status"
+        )
+        .innerText =
+        "Enter your budget.";
+
+    document
+        .getElementById(
+            "recipe-section"
+        )
+        .style
+        .display =
+        "none";
+
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function showHome() {
+
+    document
+        .getElementById(
+            "market-page"
+        )
+        .classList
+        .remove("active");
+
+    document
+        .getElementById(
+            "home"
+        )
+        .classList
+        .add("active");
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderCategories();
+
+</script>
+
+</body>
+</html>
